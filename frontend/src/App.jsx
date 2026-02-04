@@ -14,6 +14,7 @@ import {
   AlertCircle 
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import "./App.css";
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
@@ -35,16 +36,9 @@ export default function App() {
     }
   }, [reasoning]);
 
-  // Load history from localStorage on mount
+  // Load history from memory instead of localStorage
   useEffect(() => {
-    const saved = localStorage.getItem("ai-reasoning-history");
-    if (saved) {
-      try {
-        setHistory(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to load history:", e);
-      }
-    }
+    // Don't use localStorage - just keep in state
   }, []);
 
   // Save to history
@@ -58,7 +52,6 @@ export default function App() {
     };
     const updated = [newEntry, ...history].slice(0, 10); // Keep last 10
     setHistory(updated);
-    localStorage.setItem("ai-reasoning-history", JSON.stringify(updated));
   };
 
   const askAI = async () => {
@@ -78,11 +71,6 @@ export default function App() {
         { prompt },
         { timeout: 60000 } // 60 second timeout
       );
-
-      console.log("Full response:", res);
-      console.log("Response data:", res.data);
-      console.log("Has reasoning?", res.data?.reasoning);
-      console.log("Has answer?", res.data?.answer);
 
       if (!res.data || !res.data.reasoning || !res.data.answer) {
         throw new Error("Invalid response from server");
@@ -165,7 +153,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+    <div className="min-h-screen w-[100vw] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
         
         {/* ═══ HEADER ═══ */}
@@ -189,12 +177,12 @@ export default function App() {
             >
               <Brain className="w-10 h-10 text-indigo-400" />
             </motion.div>
-            <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 className="w-[100vw] text-5xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               AI Reasoning Visualizer
             </h1>
           </div>
           <p className="text-slate-400 text-lg">
-            Watch how AI thinks — step by step, in real time
+            Watch how AI thinks - step by step, in real time
           </p>
         </motion.div>
 
@@ -336,7 +324,6 @@ export default function App() {
               transition={{ duration: 0.5, type: "spring" }}
             >
               <Card className="bg-gradient-to-br from-indigo-950/50 via-purple-950/40 to-pink-950/30 border-indigo-500/40 shadow-2xl shadow-indigo-500/20 rounded-2xl overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CardContent className="p-6 relative">
                   <div className="flex items-center justify-between mb-3">
                     <h2 className="text-xl font-semibold text-indigo-300 flex items-center gap-2">
@@ -365,7 +352,7 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* ═══ HISTORY SIDEBAR (OPTIONAL) ═══ */}
+        {/* ═══ HISTORY SIDEBAR ═══ */}
         {history.length > 0 && !loading && (
           <motion.div
             initial={{ opacity: 0 }}
