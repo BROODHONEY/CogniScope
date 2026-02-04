@@ -8,17 +8,6 @@ Built with a production-style architecture and designed to be portfolio-ready.
 
 ---
 
-# 🚀 Features
-
-✅ Visual step-by-step AI reasoning
-✅ Smooth animations with **Framer Motion**
-✅ Modern startup-style UI
-✅ Secure backend (API key never exposed)
-✅ Groq-powered ultra-fast inference
-✅ Expandable architecture for agents, trees, and model comparisons
-
----
-
 # 🏗️ Tech Stack
 
 ## Frontend
@@ -41,7 +30,7 @@ Built with a production-style architecture and designed to be portfolio-ready.
 # 📂 Project Structure
 
 ```
-ai-reasoning-visualizer
+CogniScope
 │
 ├── backend
 │   ├── server.js
