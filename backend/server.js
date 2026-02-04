@@ -18,7 +18,7 @@ app.post("/ask-ai", async (req, res) => {
     const { prompt } = req.body;
 
     const completion = await groq.chat.completions.create({
-      model: "deepseek-r1-distill-llama-70b", 
+      model: "openai/gpt-oss-20b", 
       messages: [
         {
           role: "system",
