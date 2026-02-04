@@ -18,29 +18,27 @@ app.post("/ask-ai", async (req, res) => {
     const { prompt } = req.body;
 
     const completion = await groq.chat.completions.create({
-      model: "openai/gpt-oss-20b", 
-      messages: [
-        {
-          role: "system",
-          content: `
-Return reasoning separately from the final answer.
+  model: "openai/gpt-oss-20b",
+  messages: [
+    {
+      role: "system",
+      content: "You are a helpful AI that explains its reasoning clearly in steps, then gives a final answer."
+    },
+    {
+      role: "user",
+      content: `
+                Question: ${prompt}
 
-Format STRICTLY as:
+                Please respond in plain text using this style:
 
-REASONING:
-1.
-2.
-3.
+                Step 1: ...
+                Step 2: ...
+                Step 3: ...
 
-FINAL_ANSWER:
-...
-          `,
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
+                Final Answer: ...`
+        }
       ],
+      temperature: 0.3
     });
 
     const text = completion.choices[0].message.content;

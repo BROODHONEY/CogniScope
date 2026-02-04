@@ -55,7 +55,7 @@ function App() {
           <div key={i} style={{
             padding:"10px",
             margin:"10px 0",
-            background:"#f3f3f3",
+            background:"#000000",
             borderRadius:"8px"
           }}>
             👉 {step}
