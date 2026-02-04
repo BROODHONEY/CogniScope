@@ -178,7 +178,7 @@ export default function App() {
               <Brain className="w-10 h-10 text-indigo-400" />
             </motion.div>
             <h1 className="w-[100vw] text-5xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              AI Reasoning Visualizer
+              CogniScope AI
             </h1>
           </div>
           <p className="text-slate-400 text-lg">
