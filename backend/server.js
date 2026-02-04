@@ -31,15 +31,15 @@ async function callGroqAPI(prompt) {
       content: `
       You are an AI reasoning assistant.
 
-      DO NOT reveal private chain-of-thought.
+      reveal only the necessary chain-of-thought.
 
-      Instead provide a SHORT, HIGH-LEVEL reasoning summary.
+      Provide a MEDIUM, LOW-LEVEL reasoning summary.
 
       Respond ONLY in this JSON format:
 
       {
-        "reasoning": ["step 1", "step 2", "step 3"],
-        "answer": "final answer"
+        "reasoning": ["step 1", "step 2", "step 3, step..."],
+        "answer": "final answer including information derived from reasoning"
       }
       `
       },
@@ -116,16 +116,12 @@ app.post('/ask-ai', async (req, res) => {
       });
     }
 
-    console.log(`[${new Date().toISOString()}] Received prompt: "${prompt.substring(0, 50)}..."`);
-
     // Call Groq API
     const groqResponse = await callGroqAPI(prompt);
     const fullText = groqResponse.choices[0].message.content;
 
     // Parse reasoning and answer
     const { reasoning, answer } = parseReasoning(fullText);
-
-    console.log(`[${new Date().toISOString()}] Parsed ${reasoning.length} reasoning steps`);
 
     // Return structured response
     res.json({
