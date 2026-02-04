@@ -1,4 +1,4 @@
-# CogniScope
+# CogniScope (v0.1 Beta)
 
 An interactive web app that lets you **see how an AI thinks** — step by step.
 
