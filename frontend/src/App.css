@@ -1,4 +1,7 @@
-/* Import Tailwind base styles */
+/* ═══════════════════════════════════════════════════════════
+   AI Reasoning Visualizer - Upgraded with Decision Tree
+   ═══════════════════════════════════════════════════════════ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -20,8 +23,8 @@ body {
 
 /* ─── Scrollbar Customization ─────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -51,6 +54,51 @@ body {
 .bg-gradient-to-br {
   background-size: 200% 200%;
   animation: gradient-shift 15s ease infinite;
+}
+
+/* ─── Tree Branch Animation ────────────────────────────────── */
+@keyframes branch-grow {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: 100%;
+    opacity: 1;
+  }
+}
+
+.tree-branch {
+  animation: branch-grow 0.5s ease-out forwards;
+}
+
+/* ─── Node Pulse Animation ─────────────────────────────────── */
+@keyframes node-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+  }
+}
+
+.node-active {
+  animation: node-pulse 2s ease-in-out infinite;
+}
+
+/* ─── Connection Line Draw ──────────────────────────────────── */
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.connection-line {
+  stroke-dasharray: 100;
+  animation: draw-line 0.6s ease-out forwards;
 }
 
 /* ─── Glow Effects ────────────────────────────────────────── */
@@ -105,6 +153,52 @@ body {
   animation: shimmer 3s infinite;
 }
 
+/* ─── Tree Sidebar Slide ───────────────────────────────────── */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.tree-sidebar-enter {
+  animation: slide-in-right 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ─── Node Appear Animation ────────────────────────────────── */
+@keyframes node-appear {
+  from {
+    opacity: 0;
+    transform: translateX(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.node-appear {
+  animation: node-appear 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ─── Progress Bar Fill ─────────────────────────────────────── */
+@keyframes fill-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.progress-fill {
+  animation: fill-progress 0.5s ease-out forwards;
+}
+
 /* ─── Typing Cursor Effect ────────────────────────────────── */
 @keyframes blink {
   0%, 50% {
@@ -131,6 +225,30 @@ body {
 .card-hover-lift:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+}
+
+/* ─── Tree Node Hover ──────────────────────────────────────── */
+.tree-node {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tree-node:hover {
+  transform: translateX(-4px);
+}
+
+.tree-node:hover::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: linear-gradient(to bottom, #6366f1, #a855f7);
+  border-radius: 2px;
+  opacity: 0;
+  animation: fade-in 0.2s forwards;
 }
 
 /* ─── Skeleton Loader ─────────────────────────────────────── */
@@ -245,17 +363,6 @@ textarea:focus::placeholder {
   }
 }
 
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 .slide-in-left {
   animation: slide-in-left 0.4s ease-out;
 }
@@ -293,6 +400,31 @@ textarea:focus::placeholder {
   animation: gradient-shift 5s ease infinite;
 }
 
+/* ─── Tree Branch Lines ─────────────────────────────────────── */
+.tree-connection {
+  position: relative;
+}
+
+.tree-connection::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: -16px;
+  width: 2px;
+  height: 16px;
+  background: linear-gradient(to bottom, rgba(99, 102, 241, 0.3), transparent);
+}
+
+.tree-connection::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: -16px;
+  width: 24px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(99, 102, 241, 0.3), transparent);
+}
+
 /* ─── Utility Classes ─────────────────────────────────────── */
 .text-gradient {
   background: linear-gradient(to right, #6366f1, #a855f7);
@@ -313,30 +445,32 @@ textarea:focus::placeholder {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ─── Tooltip ─────────────────────────────────────────────── */
-[data-tooltip] {
-  position: relative;
+/* ─── Line Clamp Utilities ─────────────────────────────────── */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-[data-tooltip]:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4px 8px;
-  background: rgba(15, 23, 42, 0.95);
-  color: white;
-  font-size: 0.75rem;
-  border-radius: 4px;
-  white-space: nowrap;
-  margin-bottom: 4px;
-  opacity: 0;
-  animation: fade-in 0.2s forwards;
-  z-index: 1000;
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ─── Mobile Optimizations ────────────────────────────────── */
+@media (max-width: 1024px) {
+  .tree-sidebar {
+    width: 100% !important;
+  }
+  
+  .main-content {
+    margin-right: 0 !important;
+  }
+}
+
 @media (max-width: 640px) {
   h1 {
     font-size: 2rem !important;
@@ -346,10 +480,6 @@ textarea:focus::placeholder {
     font-size: 2.5rem !important;
   }
   
-  .line-ht2{
-    line-height: 2 !important;
-  }
-
   .p-6 {
     padding: 1rem !important;
   }
@@ -385,4 +515,42 @@ textarea:focus::placeholder {
   * {
     box-shadow: none !important;
   }
+}
+
+/* ─── Custom Tree Visualizations ───────────────────────────── */
+.tree-svg-path {
+  stroke: rgba(99, 102, 241, 0.3);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 5, 5;
+  animation: dash 20s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+/* ─── Tooltip ─────────────────────────────────────────────── */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: rgba(15, 23, 42, 0.95);
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-bottom: 4px;
+  opacity: 0;
+  animation: fade-in 0.2s forwards;
+  z-index: 1000;
 }
