@@ -432,6 +432,8 @@ export default function App() {
                 </div>
               </motion.div>
             )}
+
+            <div className="text-sm text-slate-500 mt-4">The model used for the current reasoning visualisation is <span className="text-indigo-400 font-medium">Open AI's gpt-oss-20b</span></div>
           </div>
         </div>
 
