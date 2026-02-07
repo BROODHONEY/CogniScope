@@ -6,6 +6,8 @@ Instead of showing only the final answer, this project visualizes the reasoning 
 
 Built with a production-style architecture and designed to be portfolio-ready.
 
+The model used for the reasoning is **Open AI's <i>'gpt-oss-20b'</i>**
+
 ---
 
 # 🏗️ Tech Stack
